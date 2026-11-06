@@ -528,6 +528,7 @@ function CollectionContent() {
                         <SongCardWithMenu
                           key={track.id}
                           id={track.id}
+                          track={track}
                           title={track.title}
                           artists={track.artists}
                           artistId={track.artistId}

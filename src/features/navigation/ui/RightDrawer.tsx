@@ -240,6 +240,7 @@ const QueueList = memo(function QueueList({
           >
             <SongCardWithMenu
               id={item.id}
+              track={item}
               title={item.title}
               artists={item.artists}
               artistId={item.artistId}
@@ -293,6 +294,7 @@ const QueueList = memo(function QueueList({
         >
           <SongCardWithMenu
             id={draggedItem.id}
+            track={draggedItem}
             title={draggedItem.title}
             artists={draggedItem.artists}
             artistId={draggedItem.artistId}

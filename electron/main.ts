@@ -74,6 +74,7 @@ import { DiscordRpcManager } from "./discord.js";
 import { PoTokenService } from "./youtube/potoken.js";
 import { confineToApp, handleTrusted, onTrusted } from "./ipc-guard.js";
 import { setupLocalTracks } from "./local-tracks/ipc.js";
+import { setupAudioExport } from "./audio-export-ipc.js";
 import {
   createSavedTrackLibrary,
   setupSavedTracks,
@@ -538,6 +539,7 @@ if (!gotTheLock) {
     const savedTracks = createSavedTrackLibrary();
     setupLocalTracks(savedTracks);
     setupSavedTracks(savedTracks);
+    setupAudioExport();
     installNetSimulation(session.defaultSession);
     setupNetProbe();
     touchBarManager = new TouchBarManager(

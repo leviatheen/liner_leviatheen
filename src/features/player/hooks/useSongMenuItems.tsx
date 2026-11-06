@@ -7,6 +7,7 @@ import {
   LuPlus,
   LuTrash2,
   LuFolderPlus,
+  LuDownload,
 } from "react-icons/lu";
 import { ShareForwardLine } from "@mingcute/react";
 import type { DropdownMenuItem } from "@/shared/ui/DropdownMenu";
@@ -22,6 +23,8 @@ import { useTranslation } from "@/languages";
 import { showToast } from "@/shared/ui";
 import { buildShareUrl } from "@/shared/utils/share";
 import { isLocalTrackId } from "@/shared/media/local";
+import type { Track } from "@/shared/types";
+import { saveTrackAs } from "../engine/saveTrackAs";
 
 const CLOUD_ONLY_ITEMS = new Set([
   "start-radio",
@@ -34,6 +37,10 @@ const CLOUD_ONLY_ITEMS = new Set([
 
 export interface SongMenuContext {
   id?: string;
+  track?: Track;
+  artistId?: string;
+  artistList?: Track["artistList"];
+  audioVariant?: Track["audioVariant"];
   title: string;
   artists: string;
   coverUrl: string;
@@ -53,6 +60,10 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
   const { t } = useTranslation();
   const {
     id,
+    track,
+    artistId,
+    artistList,
+    audioVariant,
     title,
     artists,
     coverUrl,
@@ -94,6 +105,52 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
       });
     }
   }, [id, searchType, title, artists, t]);
+
+  const handleSaveAs = useCallback(async () => {
+    if (!id) return;
+    try {
+      const result = await saveTrackAs(
+        track ?? {
+          id,
+          title,
+          artists,
+          artistId,
+          artistList,
+          audioVariant,
+          coverUrl,
+          durationMs: durationMs ?? 0,
+          playCount: 0,
+        },
+      );
+      if (result === "saved") {
+        showToast(t("common.audio_saved"), "checkmark", {
+          description: artists ? `${title} — ${artists}` : title,
+        });
+      }
+    } catch {
+      showToast(t("common.audio_save_failed"), "error", {
+        description: artists ? `${title} — ${artists}` : title,
+      });
+    }
+  }, [
+    id,
+    track,
+    title,
+    artists,
+    artistId,
+    artistList,
+    audioVariant,
+    coverUrl,
+    durationMs,
+    t,
+  ]);
+
+  const saveAsItem: DropdownMenuItem = {
+    id: "save-as",
+    label: t("common.save_as"),
+    icon: <LuDownload size={15} />,
+    onClick: () => void handleSaveAs(),
+  };
 
   const buildMenu = useCallback((): DropdownMenuItem[] => {
     const isTrack = searchType === "track" || !searchType;
@@ -152,6 +209,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
               });
             },
           },
+          saveAsItem,
           {
             id: liked ? "unlike-track" : "like-track",
             label: liked ? t("common.unlike") : t("common.like"),
@@ -244,6 +302,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
             });
           },
         },
+        saveAsItem,
         {
           id: liked ? "unlike-track" : "like-track",
           label: liked ? t("common.unlike") : t("common.like"),
@@ -319,6 +378,10 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
     ];
   }, [
     id,
+    track,
+    artistId,
+    artistList,
+    audioVariant,
     title,
     artists,
     coverUrl,
@@ -330,6 +393,7 @@ export function useSongMenuItems(ctx: SongMenuContext): DropdownMenuItem[] {
     playlistItemId,
     playlistTitle,
     onRemoveFromQueue,
+    saveAsItem,
     liked,
     handleLike,
     handleShare,

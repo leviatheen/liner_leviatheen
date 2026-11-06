@@ -223,6 +223,12 @@ export interface LinerElectronApi {
     state: SavedLyricsState,
     lyrics?: unknown,
   ) => Promise<boolean>;
+  saveAudioAs: (input: {
+    suggestedName: string;
+    extension: string;
+    mimeType: string;
+    bytes: Uint8Array;
+  }) => Promise<"saved" | "canceled">;
   pathForFile: (file: File) => string;
 }
 
@@ -488,6 +494,7 @@ const api: LinerElectronApi = {
     ipcRenderer.invoke("saved-tracks:lyrics-get", trackId),
   savedTracksSetLyrics: (trackId, state, lyrics) =>
     ipcRenderer.invoke("saved-tracks:lyrics-set", trackId, state, lyrics),
+  saveAudioAs: (input) => ipcRenderer.invoke("audio:save-as", input),
   pathForFile: (file) => webUtils.getPathForFile(file),
 };
 

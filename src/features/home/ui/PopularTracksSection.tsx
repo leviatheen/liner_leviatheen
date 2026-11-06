@@ -49,6 +49,7 @@ function TrackCard({
 
   const menuItems = useSongMenuItems({
     id: item.item.id,
+    track: item.item,
     title: item.item.title,
     artists: item.item.artists,
     coverUrl: item.item.coverUrl,

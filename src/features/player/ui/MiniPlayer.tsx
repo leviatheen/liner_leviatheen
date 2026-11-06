@@ -361,6 +361,7 @@ function MiniPlayer({
 
   const songMenuItems = useSongMenuItems({
     id: currentTrack?.id,
+    track: currentTrack ?? undefined,
     title: currentTrack?.title ?? "",
     artists: currentTrack?.artists ?? "",
     coverUrl: currentTrack?.coverUrl ?? "",

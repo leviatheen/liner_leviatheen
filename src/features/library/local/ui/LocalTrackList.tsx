@@ -48,6 +48,7 @@ const LocalTrackRow = memo(function LocalTrackRow({
     >
       <SongCardWithMenu
         id={track.id}
+        track={track}
         title={track.title}
         artists={track.artists}
         coverUrl={track.coverUrl}

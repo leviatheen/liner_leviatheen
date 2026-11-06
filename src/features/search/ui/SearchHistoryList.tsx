@@ -86,6 +86,7 @@ export const SearchHistoryList = memo(function SearchHistoryList({
             <SongCardWithMenu
               key={item.id}
               id={item.id}
+              track={item.type === "track" ? data : undefined}
               title={item.title}
               artistId={data?.artistId ?? data?.artist_id}
               artistList={data?.artistList}

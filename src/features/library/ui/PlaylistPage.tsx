@@ -102,6 +102,7 @@ const TrackItem = memo(function TrackItem({
     <div style={style} data-reorder-item>
       <SongCardWithMenu
         id={track.id}
+        track={track}
         title={track.title}
         artists={track.artists}
         artistId={track.artistId}
@@ -1020,6 +1021,7 @@ function LibraryPlaylistContent() {
                   >
                     <SongCardWithMenu
                       id={draggedItem.id}
+                      track={draggedItem}
                       title={draggedItem.title}
                       artists={draggedItem.artists}
                       artistId={draggedItem.artistId}

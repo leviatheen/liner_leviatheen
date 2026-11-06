@@ -45,6 +45,7 @@ const CachedTrackRow = memo(function CachedTrackRow({
     >
       <SongCardWithMenu
         id={track.id}
+        track={track}
         title={track.title}
         artists={track.artists}
         artistId={track.artistId}

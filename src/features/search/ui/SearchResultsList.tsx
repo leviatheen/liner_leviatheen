@@ -99,6 +99,7 @@ export const SearchResultsList = memo(function SearchResultsList({
             >
               <SongCardWithMenu
                 id={it.id}
+                track={it._type === "track" ? it : undefined}
                 title={it.title || it.name || ""}
                 artistId={it.artistId ?? it.artist_id}
                 artistList={it.artistList}

@@ -64,6 +64,7 @@ const SavedTrackRow = memo(function SavedTrackRow({
     >
       <SongCardWithMenu
         id={track.id}
+        track={track}
         title={track.title}
         artists={track.artists}
         artistId={track.artistId}
